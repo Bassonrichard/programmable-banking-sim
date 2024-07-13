@@ -1,0 +1,20 @@
+name: programmable-banking
+
+services:
+  banking-sim:
+    image: "banking-sim:latest"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+     - PORT=3000
+     - DB_FILE='investec.db'
+     - AUTH=false
+     - CLIENT_ID=
+     - CLIENT_SECRET=
+     - API_KEY=
+     - TOKEN_EXPIRY=1799
+    volumes:
+      - ./investec.db:/app/investec.db

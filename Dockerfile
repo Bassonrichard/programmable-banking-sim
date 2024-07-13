@@ -1,19 +1,15 @@
-FROM ubuntu as base
-RUN apt-get update
-RUN apt-get install npm -y
-# RUN apt add python3
-# Add package file
-COPY package.json ./
-COPY package-lock.json ./
-COPY investec.db ./
-COPY prisma ./prisma/ 
-# Install deps
-RUN npm install
+FROM node:16 as build
+WORKDIR /app
 
-# Copy source
+COPY package.json .
+COPY package-lock.json .
+COPY investec.db .
+COPY prisma ./prisma/
+COPY tsconfig.json .
 COPY src ./src
-COPY tsconfig.json ./tsconfig.json
+COPY public ./public
 
-# Expose port 3000
+RUN npm ci
+
 EXPOSE 3000
-CMD ["npm", "run", "dev"]
+ENTRYPOINT ["npm", "start"]
